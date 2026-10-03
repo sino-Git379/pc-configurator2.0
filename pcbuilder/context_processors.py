@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.utils import timezone
 
-from .models import Build
+from .models import Build, UserOrder
 from .services.checker import check_compatibility
 
 
@@ -12,6 +12,12 @@ def current_build(request):
         Build.objects.filter(user=request.user, status=Build.Status.DRAFT)
         if request.user.is_authenticated
         else Build.objects.none()
+    )
+    orders = (
+        UserOrder.objects.filter(user=request.user)
+        .prefetch_related("items")[:20]
+        if request.user.is_authenticated
+        else UserOrder.objects.none()
     )
     if build_id and request.user.is_authenticated:
         build = Build.objects.filter(pk=build_id, user=request.user).first()
@@ -25,6 +31,7 @@ def current_build(request):
         "current_build_items": items,
         "current_build_component_ids": [item.component_id for item in items],
         "user_builds": builds.order_by("-created_at")[:20],
+        "user_orders": orders,
         "min_delivery_date": timezone.localdate().isoformat(),
         "current_build_count": sum(item.quantity for item in items),
         "current_build_total": sum(

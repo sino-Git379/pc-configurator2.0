@@ -20,6 +20,12 @@
     </div>
 </section>
 
+{% if user.is_authenticated %}
+<button class="sidebar-orders-button" id="orders-open" type="button">
+    <span><i class="nav-glyph">№</i> МОИ ЗАКАЗЫ</span><b aria-hidden="true">↗</b>
+</button>
+{% endif %}
+
 <section class="sidebar-accordion" data-accordion>
     <h2 class="sidebar-section-heading">
         <button class="sidebar-accordion-trigger" type="button" aria-expanded="false" aria-controls="sidebar-builds">

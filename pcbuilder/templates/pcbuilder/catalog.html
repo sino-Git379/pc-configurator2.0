@@ -142,8 +142,51 @@
         </main>
     </div>
 
+    {% if not request.user.is_authenticated %}
+    <section class="welcome-screen" id="welcome-screen" aria-labelledby="welcome-title" hidden>
+        <div class="welcome-panel">
+            <div class="welcome-copy">
+                <p class="welcome-kicker">PCFORGE / NEXT-GEN CONFIGURATOR</p>
+                <h1 id="welcome-title">WELCOME TO <span>PCFORGE</span></h1>
+                <p>Инженерный конструктор ПК нового поколения с автопроверкой совместимости сокетов и мощности.</p>
+                <button class="welcome-guest" id="continue-guest" type="button"><span>Продолжить как гость</span><b aria-hidden="true">↗</b></button>
+            </div>
+            <div class="welcome-auth" data-auth-scope>
+                <p class="welcome-auth-kicker">PCFORGE / ACCOUNT</p>
+                <h2>Ваша сборка начинается здесь</h2>
+                <div class="auth-tabs" role="tablist" aria-label="Авторизация">
+                    <button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="login">Вход</button>
+                    <button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="register">Регистрация</button>
+                </div>
+                <form class="auth-form" data-auth-panel="login" action="{% url 'auth_login' %}">
+                    {% csrf_token %}
+                    <label for="welcome-login-username">Логин</label>
+                    <input id="welcome-login-username" name="username" autocomplete="username" required>
+                    <label for="welcome-login-password">Пароль</label>
+                    <input id="welcome-login-password" name="password" type="password" autocomplete="current-password" required>
+                    <button class="auth-submit" type="submit"><span>Войти</span><b aria-hidden="true">↗</b></button>
+                </form>
+                <form class="auth-form" data-auth-panel="register" action="{% url 'auth_register' %}" hidden>
+                    {% csrf_token %}
+                    <label for="welcome-register-username">Логин</label>
+                    <input id="welcome-register-username" name="username" autocomplete="username" required>
+                    <label for="welcome-register-email">Электронная почта</label>
+                    <input id="welcome-register-email" name="email" type="email" autocomplete="email">
+                    <label for="welcome-register-password">Пароль</label>
+                    <input id="welcome-register-password" name="password" type="password" autocomplete="new-password" required>
+                    <label for="welcome-register-confirm">Повторите пароль</label>
+                    <input id="welcome-register-confirm" name="password_confirm" type="password" autocomplete="new-password" required>
+                    <button class="auth-submit" type="submit"><span>Создать аккаунт</span><b aria-hidden="true">↗</b></button>
+                </form>
+                <p class="auth-message" data-auth-message role="status" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     {% include "pcbuilder/partials/auth_modal.html" %}
     {% include "pcbuilder/partials/cart_modal.html" %}
+    {% include "pcbuilder/partials/orders_modal.html" %}
     {{ component_data|json_script:"component-data" }}
     <script src="{% static 'pcbuilder/sidebar.js' %}" defer></script>
     <script src="{% static 'pcbuilder/catalog.js' %}" defer></script>

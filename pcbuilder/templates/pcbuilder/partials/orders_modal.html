@@ -1,0 +1,23 @@
+{% if user.is_authenticated %}
+<dialog class="orders-modal" id="orders-modal" aria-labelledby="orders-title">
+    <section class="orders-dialog-content">
+        <button class="checkout-close" id="orders-close" type="button" aria-label="Закрыть историю заказов">×</button>
+        <p class="cart-kicker">PCFORGE / ACCOUNT</p>
+        <h2 id="orders-title">История заказов</h2>
+        <div class="orders-list">
+            {% for order in user_orders %}
+                <article class="order-history-card">
+                    <header><strong>Заказ №{{ order.pk }}</strong><time datetime="{{ order.created_at|date:'c' }}">{{ order.created_at|date:'d.m.Y' }}</time></header>
+                    <p class="order-delivery">Доставка назначена на: <b>{{ order.delivery_date|date:'d.m.Y' }}</b></p>
+                    <ul>
+                        {% for item in order.items.all %}<li><span>{{ item.component_name }} × {{ item.quantity }}</span><b>{{ item.unit_price|floatformat:2 }} ₽</b></li>{% endfor %}
+                    </ul>
+                    <footer><span>{% if order.status == 'confirmed' %}В обработке{% else %}Оформлен{% endif %}</span><strong>{{ order.total_price|floatformat:2 }} ₽</strong></footer>
+                </article>
+            {% empty %}
+                <p class="orders-empty">Вы ещё не оформляли заказы.</p>
+            {% endfor %}
+        </div>
+    </section>
+</dialog>
+{% endif %}

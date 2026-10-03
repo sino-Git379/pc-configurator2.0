@@ -311,7 +311,7 @@ def checkout(request):
         {
             "success": True,
             "order_id": order.pk,
-            "message": f"Заказ №{order.pk} оформлен! Чек и детали отправлены на вашу почту.",
+            "message": f"Заказ №{order.pk} успешно оформлен!",
         }
     )
 

@@ -1,10 +1,10 @@
 <form id="csrf-token-form" hidden>{% csrf_token %}</form>
 <dialog class="auth-modal" id="auth-modal" aria-labelledby="auth-title">
-    <section class="auth-dialog-content">
+    <section class="auth-dialog-content" data-auth-scope>
         <button class="auth-close" id="auth-close" type="button" aria-label="Закрыть окно">×</button>
         <p class="auth-kicker">PCFORGE / ACCOUNT</p>
         <h2 id="auth-title">Ваша сборка ждёт</h2>
-        <p class="auth-intro">Войдите или создайте аккаунт, чтобы сохранить сборку.</p>
+        <p class="auth-intro" id="auth-intro">Войдите или создайте аккаунт, чтобы сохранить сборку.</p>
         <div class="auth-tabs" role="tablist" aria-label="Авторизация">
             <button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="login">Вход</button>
             <button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="register">Регистрация</button>
@@ -27,6 +27,6 @@
             <input id="auth-register-confirm" name="password_confirm" type="password" autocomplete="new-password" required>
             <button class="auth-submit" type="submit"><span>Создать аккаунт</span><b aria-hidden="true">↗</b></button>
         </form>
-        <p class="auth-message" id="auth-message" role="status" aria-live="polite"></p>
+        <p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p>
     </section>
 </dialog>

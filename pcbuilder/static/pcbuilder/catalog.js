@@ -15,8 +15,18 @@
     const cartCheckout = document.getElementById("cart-checkout");
     const checkoutDialog = document.getElementById("checkout-modal");
     const checkoutForm = document.getElementById("checkout-form");
-    const authDialog = document.getElementById("auth-modal");
+    const ordersDialog = document.getElementById("orders-modal");
+    const welcomeScreen = document.getElementById("welcome-screen");
     let selectedProduct = null;
+
+    if (welcomeScreen && !localStorage.getItem("pcforge-guest-continued")) {
+        welcomeScreen.hidden = false;
+    }
+    document.getElementById("continue-guest")?.addEventListener("click", () => {
+        localStorage.setItem("pcforge-guest-continued", "true");
+        welcomeScreen.classList.add("is-leaving");
+        window.setTimeout(() => { welcomeScreen.hidden = true; }, 360);
+    });
 
     const labels = {
         socket: "Socket",
@@ -258,6 +268,11 @@
 
     document.getElementById("cart-close").addEventListener("click", () => cartDialog.close());
     document.getElementById("checkout-close").addEventListener("click", () => checkoutDialog.close());
+    document.getElementById("orders-open")?.addEventListener("click", () => ordersDialog?.showModal());
+    document.getElementById("orders-close")?.addEventListener("click", () => ordersDialog?.close());
+    ordersDialog?.addEventListener("click", (event) => {
+        if (event.target === ordersDialog) ordersDialog.close();
+    });
     cartOpen.addEventListener("click", () => cartDialog.showModal());
     cartDialog.addEventListener("click", (event) => {
         if (event.target === cartDialog) cartDialog.close();
@@ -289,8 +304,7 @@
         if (cartCheckout.dataset.authenticated === "true") {
             checkoutDialog.showModal();
         } else {
-            authDialog.dataset.checkoutPending = "true";
-            authDialog.showModal();
+            window.openAuthDialog("Войдите или зарегистрируйтесь, чтобы сохранить ваш ПК", true);
         }
     });
 
@@ -298,8 +312,7 @@
         if (cartSaveBuild.disabled) return;
         if (cartSaveBuild.dataset.authenticated !== "true") {
             cartDialog.close();
-            authDialog.dataset.checkoutPending = "false";
-            authDialog.showModal();
+            window.openAuthDialog("Войдите или зарегистрируйтесь, чтобы сохранить ваш ПК", false);
             return;
         }
 

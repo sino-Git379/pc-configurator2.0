@@ -53,7 +53,7 @@
         <h2 id="checkout-title">Оформление заказа</h2>
         <p class="checkout-intro">Укажите дату доставки и адрес для чека.</p>
         <form id="checkout-form" action="{% url 'checkout' %}">
-            <label for="delivery-date">Когда вам удобно привезти заказ?</label>
+            <label for="delivery-date">Выберите удобную дату доставки</label>
             <input id="delivery-date" name="delivery_date" type="date" min="{{ min_delivery_date }}" required>
             <label for="order-email">Email для чека</label>
             <input id="order-email" name="email" type="email" value="{{ request.user.email }}" autocomplete="email" required>
